@@ -5,6 +5,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/moonrhythm/parapet"
 	"github.com/moonrhythm/parapet/pkg/upstream"
@@ -26,12 +27,19 @@ func main() {
 	var tr http.RoundTripper
 	if *isHTTPS {
 		tr = &upstream.HTTPSTransport{
+			DialTimeout:           time.Second,
+			MaxIdleConns:          1000,
+			ResponseHeaderTimeout: -1,
 			TLSClientConfig: &tls.Config{
 				InsecureSkipVerify: true,
 			},
 		}
 	} else {
-		tr = &upstream.HTTPTransport{}
+		tr = &upstream.HTTPTransport{
+			DialTimeout:           time.Second,
+			MaxIdleConns:          1000,
+			ResponseHeaderTimeout: -1,
+		}
 	}
 
 	svc := parapet.NewBackend()
