@@ -43,6 +43,10 @@ func main() {
 				InsecureSkipVerify: true,
 			},
 		}
+	case strings.HasPrefix(*target, "h2c://"):
+		*target = strings.TrimPrefix(*target, "h2c://")
+		*target = injectDefaultPort(*target, "80")
+		tr = &upstream.H2CTransport{}
 	default:
 		*target = strings.TrimPrefix(*target, "http://")
 		*target = injectDefaultPort(*target, "80")
