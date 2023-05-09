@@ -1,8 +1,11 @@
 module github.com/moonrhythm/h2cp
 
-go 1.16
+go 1.20
+
+require github.com/moonrhythm/parapet v0.12.2
 
 require (
-	github.com/moonrhythm/parapet v0.10.1-0.20210502045302-58e94cb11c57
-	golang.org/x/net v0.0.0-20210502030024-e5908800b52b // indirect
+	github.com/kavu/go_reuseport v1.5.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 )

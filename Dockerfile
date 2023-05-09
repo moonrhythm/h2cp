@@ -1,4 +1,4 @@
-FROM golang:1.16.3
+FROM golang:1.20.4
 
 ENV GOOS=linux
 ENV GOARCH=amd64
