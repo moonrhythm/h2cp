@@ -1,10 +1,12 @@
-FROM golang:1.20.4
+FROM registry.moonrhythm.io/builder
 
-ENV GOOS=linux
-ENV GOARCH=amd64
 ENV CGO_ENABLED=0
-RUN mkdir -p /workspace
+
 WORKDIR /workspace
+
+ADD .tool-versions .
+RUN asdf install
+
 ADD go.mod go.sum ./
 RUN go mod download
 ADD . .
