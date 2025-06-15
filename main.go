@@ -9,12 +9,14 @@ import (
 	"time"
 
 	"github.com/moonrhythm/parapet"
+	"github.com/moonrhythm/parapet/pkg/prom"
 	"github.com/moonrhythm/parapet/pkg/upstream"
 )
 
 func main() {
 	addr := flag.String("addr", ":8080", "listen address")
 	target := flag.String("target", "", "target address")
+	enableProm := flag.Bool("prom", false, "enable prometheus metrics")
 	flag.Parse()
 
 	if *addr == "" {
@@ -58,6 +60,16 @@ func main() {
 	}
 
 	svc := parapet.NewBackend()
+
+	if *enableProm {
+		prom.Connections(svc)
+		prom.Networks(svc)
+		svc.Use(prom.Requests())
+
+		log.Printf("enabled Prometheus metrics on :9187")
+		go prom.Start(":9187")
+	}
+
 	svc.Addr = *addr
 	svc.H2C = true
 	svc.Use(upstream.SingleHost(*target, tr))
